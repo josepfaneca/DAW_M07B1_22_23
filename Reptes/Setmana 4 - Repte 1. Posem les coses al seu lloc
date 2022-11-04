@@ -1,0 +1,78 @@
+Hola.
+Heu de reflexionar i contestar les preguntes següents al voltant de formularis i EJB. (recordeu que ja us deixo a sota la solució, es tracta que ho intenteu vosaltres sense mirar-les)
+
+És segur fer validacions de formulari al client?
+Podem fer validacions de formulari al client? Quines?
+Són absolutament necessàries les validacions de formularis?
+Per a què fem servir EJB? Quin és el seu objectiu?
+Doneu casos / exemples de EJB amb sessió (stateful), sense (stateless) i singleton.
+Quins pros i contres tenen els EJB stateful i els stateless?
+Què són les regles de negoci? On posar-les?
+Si us plau, feu les vostres aportacions en aquest mateix fil.
+
+
+
+Endavant!
+
+
+
+     Germán Flores
+
+
+
+--------------------------------------------------------
+
+
+
+És segur fer validacions de formulari al client?
+
+Normalment les validacions es fan en el servidor. Per exemple, una autenticació s'hauria de fer sempre al servidor sense posar cap valor d'autenticació al client (es veu el codi a qualsevol navegador)
+
+Podem fer validacions de formulari al client? Quines?
+
+Només s'haurien de fer validacions de format i d'obligació.
+
+Són absolutament necessàries les validacions de formularis?
+
+Són necessàries per mantenir un bon estat de la base de dades i la coherència de la mateixa. A banda qüestions  de seguretat.
+
+Per a què fem servir EJB? Quin és el seu objectiu?
+
+Un Enterprise Java Beans (EJB) és un objecte que es crea en el servidor d'aplicacions en el contenidor específic de EJB.
+
+Al executar l'aplicació, els objectes EJB es creen, i quan els necessitem els fem servir. Al estar lligats al contenidor d'EJBs, es pot fer servir els seus serveis:
+
+gestió de transaccions
+
+seguretat
+
+concurrència
+
+reutilització
+
+etc, …
+
+
+Doneu casos / exemples de EJB amb sessió (stateful), sense (stateless) i singleton.
+
+Stateless, sense estat, és per exemple, els EJB per validar dades.
+
+Stateful, amb estat, són dades que volem mantenir a tota la sessió de l'usuari. No vol dir només dades com el codi d'usuari, doncs pot no estar autenticat. Penseu en les dades d'una cistella de compra abans de que el comprador s'hagi validat.
+
+Singleton vol dir que es comparteix l'objecte per tots els usuaris connectats. Podem pensar, per exemple, en un joc online on certes dades s'han de compartir. Concretament, si estem jugant al pòquer amb diversos usuaris, volem que l'estat actual de la partida sigui compartit. Això es podria emmagatzemar en un EJB del tipus singleton.
+
+Quins pros i contres tenen els EJB stateful i els stateless?
+
+Només us comentaré el funcionament quant al servidor d'aplicacions / contenidor EJB.
+
+En el cas dels stateful, quan iniciem la sessió, es crea l'objecte al contenidor i es destrueix quan ens desconnectem.
+
+En el cas dels stateless, no tenim cap control perquè el servidor crea un pool d'aquests objectes i a cada petició ens pot assignar un diferent.
+
+Això no és bo, ni dolent. Simplement, heu de dissenyar la vostra aplicació escollint la millor opció.
+
+Què són les regles de negoci? On posar-les?
+
+Les regles de negoci són les condicions / restriccions que ens requereixen sobre les dades. Per exemple, no donar d'alta una comanda si el client té un deute major a un import donat. Però també el format del NIF (verificació de la lletra) és una regla de negoci.
+
+En les arquitectures Model View Controller, sempre es posen al model. Això, en el nostre cas, equival a que les posarem als mateixos EJB i no als Servlets.

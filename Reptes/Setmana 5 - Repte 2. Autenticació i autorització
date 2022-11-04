@@ -1,0 +1,34 @@
+Hola.  
+
+Aquest repte te un objectiu més funcional que tècnic, dons heu d'intentar tenir clars els conceptes i relacionar-los amb el mon real.
+
+Heu de debatre / contestar les preguntes següents.
+On situar les restriccions d'autorització? I les regles de negoci? Són validacions?
+A una organització (o empresa): quines entitats (classes i mètodes) es poden fer servir segons rol / departament? Per exemple, l'entitat Treballador i el mètode mostrarSou
+Penseu / cerqueu més mètodes d'autenticació.
+Perquè fem autorització basada en rols i no en usuaris directament?
+Intenteu contestar les preguntes en aquest mateix fil i debatre les vostres aportacions.
+
+Endavant!
+
+
+
+
+
+
+
+--------------------------------------------------------
+
+
+
+On situar les restriccions d'autorització? I les regles de negoci? Són validacions?
+Qualsevol restricció d'autorització s'ha de situar al servidor, i sempre és millor en EJB a tal efecte.
+A una organització (o empresa): quines entitats (classes i mètodes) es poden fer servir segons rol / departament? Per exemple, l'entitat Treballador i el mètode mostrarSou
+No hi ha una resposta concreta, depèn de l'organització. A l'exemple anterior, el rol administratiu, encara que pot veure par de l'entitat Treballador, segurament no podrà executar mostrarSou.
+Penseu / cerqueu més mètodes d'autenticació.
+Avui en dia, hi ha molts mètodes d'autenticació que van molt més enllà de la validació usuari i contrasenya. Per exemple, els biomètrics: empremta dactilar, iris, ...
+Perquè fem autorització basada en rols i no en usuaris directament?
+L'autorització s'ha de fer basada en rols perquè els usuaris poden canviar. Realment, fem rols per funcions dins d'una organització i als rols assignem permisos.
+
+
+  Germán Flores

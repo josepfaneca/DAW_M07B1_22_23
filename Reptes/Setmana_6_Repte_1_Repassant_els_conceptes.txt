@@ -1,0 +1,77 @@
+Hola.
+
+Contesteu sobre aquest mateix fil el que es proposa a continuació sobre Spring MVC.
+
+Heu de debatre / contestar les preguntes següents.
+
+Què és Applicaction Context? Qui, com i quan es crea?
+Què és Servlet Dispatcher (Front Controller)? I què és Web Application Context?
+Es poden tenir més d'un Servlet Dispatcher? On es configura? Quines peticions atendrà cadascun?
+Quins tipus d'objectes posaríem a nivell d'Application i a nivell de Web Application Context?
+Expliqueu breument quin és el procés per arribar a un mètode concret d'un controlador concret?
+Què es retorna?
+Feu un diccionari de les anotacions que heu aprés en aquest tema.
+
+Ànims, que us ajudarà a consolidar els coneixements.
+
+Cordialment,
+
+    Germán Flores
+
+
+
+
+
+
+
+
+
+-----------------------------------------------------------------------------------------------------
+
+
+
+
+
+Poso una possible 'solució':
+
+Què és Application Context? Qui, com i quan es crea?
+Quan despleguem una aplicació sobre el servidor d'aplicacions, Glassfiss en el nostre cas, es crea un contenidor d'objectes per a tota l'aplicació anomenat Application Context. Com és i quins objectes es crearan aquí dins és el que definim al fitxer applicationContext.xml (es pot canviar aquest nom i si no el veieu enlloc, vol dir que es crearà amb els valors per defecte)
+
+Què és Servlet Dispatcher (Front Controller)? I què és Web Application Context?
+A una aplicación Spring MVC desplegada a un servidor d'aplicacions com Glassfish, les peticions que arriben del client (ex. navegador) són gestionades en primer lloc per un Servlet especial creat pel servidor d'aplicacions anomenat Servlet Dispatcher. Per a cada Servlet dispatcher definit al fitxer de configuració web.xml, el servidor d'aplicacions crea un contenidor d'objectes segons les especificacions definides al fitxer de configuració associat a cada Servlet Dispatcher anomenats per defecte xxx-servlet.xml, on “xxx” és el nom del Servlet Dispatcher. 
+
+Nota: aquesta arquitectura no és específica d'Spring, és un patró (pattern) on es fa servir el nom Front Controller en comptes de Servlet Dispatcher.
+
+Es poden tenir més d'un Servlet Dispatcher? On es configurar? Quines peticions atendrà cadascun?
+ Es poden fer servir diversos a web.xml. Amb l'etiqueta <servlet-mapping> de cadascun, es definirà les url que atendran. Amb diversos servlets dispatchers, podem definir beans específics de cadascun, definint, en realitat, comportaments diferents a cadascun (per exemple, regles de negoci diferents: permisos, ...)
+
+Quins tipus d'objectes posaríem a nivell d'Application i a nivell de Web Application Context?
+En aquest cas, heu de pensar que qualsevol objecte creat a nivell d'Aplicació Context (AC) serà compartit (accessible) des de cada objecte inclòs a qualsevol contenidor a nivell de Servlet Dispatcher (Web Application Context) Beans que soporten la definició de regles de negoci inmutables per a qualsevol part de l'aplicació, els posaríem a nivell d'aplicació. En canvi, què posarem a nivell de Web Application Context (WAC) ? Pensem en dos casos:
+
+a) només tenim un WAC: sembla que en aquest cas no importa perquè els beans es veuen entre ells i a més amb els d'AC. Però la vostra aplicació és viva, s'ha de mantenir i segurament evolucionarà amb més funcionalitat, i això pot derivar a tenir més d'un WAC.
+
+b) tenim més d'un WAC: per exemple, si tenim una aplicació que aten peticions des de navegadors i alhora serveis web, llavors pot ser convenient tenir servlets dispatcher separats. En aquest cas, els beans comuns estaran a nivell d'AC i els beans específics a nivell de cada WAC.
+
+Explica breument quin és el procés per arribar a un mètode concret d'un controlador concret?
+Segons la url, la petició serà agafada pel Servlet Dispatcher que correspon (segons el <servlet-mapping> definit a web.xml) Generalment, qualsevol petició serà agafada per l'únic Servlet Dispatcher definit.
+
+El Servlet Dispatcher cerca cada objecte creat amb l'anotació @Controller, i dins, cerca el mètode que es correspon amb la url de la petició, mirant l'anotació @RequestMapping i els seus atributs.
+
+Què es retorna?
+Amb Spring MVC podem construir diversos tipus de retorn. En el cas dels exemples dels materials d'aquesta setmana (Unitat 3 / Apartat 1) el retorn són pàgines jsp. Al nostre codi la composarem afegint atributs a un objecte ModelAndView, i mitjançant la configuració del View Resolver a nivell de WAC:
+
+<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+
+        <property name="prefix" value="/WEB-INF/views/" />
+
+        <property name="suffix" value=".jsp" />
+
+  </bean>
+
+Spring MVC construirà la resposta en forma d'una vista jsp.
+
+Amb altres objectes i altres View Resolvers que podeu configurar, en altres apartats veureu que es poden construir respostes de tipus XML, JSON, ...
+
+Feu un diccionari de les anotacions que heu aprés en aquest tema
+Això el deixo per vosaltres. Està molt detallat als materials.
+Espero que això us serveixi de resum.

@@ -1,0 +1,72 @@
+Hola.
+
+Us proposo resoldre aquest repte aportant les vostres solucions en aquest mateix fil.
+
+
+Repte 1. El meu servlet es torna boig
+
+L'objecte d'aquest repte és aprofundir en la comprensió del cicle de vida dels servlets.
+
+Quan creem un servlet i el cridem des de un navegador, s'executa dins del servlet container del servidor d'aplicacions, per exemple a Glassfish. Com sabeu, aquest servlet és únic i atendrà diverses peticions des de diversos clients alhora.
+
+Segons el disseny de la nostra aplicació, aquest fet ens pot afectar donant resultats inesperats.
+
+Pensem en una variable a nivell de la classe, és a dir, com a propietat de l'objecte. Tindrà el mateix valor per a totes les peticions fins que l'objecte servlet sigui destruït.
+
+El que heu de fer és crear un servlet amb un comptador definit com a propietat de la classe i dissenyar un exemple que mostri aquest comptador de manera que ens doni un mal funcionament. Per exemple, anar mostrant el comptador amb un for incremental amb increment 1 i al cridar el servlet des de diversos navegadors alhora, llavors que en mostri salts majors a 1.
+
+El que heu de fer és donar propostes al fòrum de com mostrar aquest mal funcionament.
+
+
+
+
+
+
+
+
+
+
+
+---------------------------------------------------------------------------------
+
+
+
+  
+
+protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+
+            throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        try (PrintWriter out = response.getWriter()) {
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet ServletDolent</title>");
+            out.println("</head>");
+            out.println("<body>");
+            for (int c = 0; c < 10; c++) {
+                out.println("Comptador = " + comptador + "<br>");
+                try {
+                    Thread.sleep(1000);
+                    comptador++;
+                } catch (InterruptedException exc) {
+                }
+
+            }
+            out.println("</body>");
+            out.println("</html>");
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+Gràcies,
+
+     Germán Flores

@@ -1,0 +1,66 @@
+Hola.
+
+Com veureu a la web de l'aula, us proposo el que s'exposa a continuació per aquesta setmana.
+
+Si heu seguit els materials, segurament haureu activitat la monitorització HTTP al servidor Glassfish.
+
+Feu un projecte Maven Java / Web Application amb Glassfish i afegiu-ne una pàgina JSP. Executeu aquesta pàgina per veure que tot va bé (engegarà els servidor i mostrarà la pàgina al navegador)
+
+Mireu que ha passat al "HTTP Server Monitor" Hi ha unes pestanyes amb unes dades. Podeu anar a la pestanya Request i vegeu que hi ha el valor de "Client IP address". Pels materials, sabeu com mostrar això per pantalla. Però anem a veure com aconseguir més d'aquests valors al nostre JSP.
+
+Les preguntes que heu de respondre són:
+
+Com mostrar totes les dades de la pestanya Request?
+
+Només puc fer-ho amb els de la pestanya Request?
+
+Com faríem per tal de que NetBeans ens ajudi a endevinar quines classes / mètodes tinc a l'abast?
+
+Per exemple, com podeu mostrar l'id de la sessió?
+
+Heu de debatre entre vosaltres, no es tracta de que cadascú doni la resposta, doncs si ja l'ha donat un company, només hauríeu de dir si esteu o no d'acord, i si s'escau, donar la vostra solució.
+
+Jo només escriuré si veig que alguna cosa està malament i no la corregiu entre vosaltres; o si puc fer alguna aportació que cregui de valor.
+
+Penseu que els reptes estan encaminats a donar-vos eines per l'EAC.
+
+Si ho creieu convenient, utilitzeu aquest fil per a plantejar dubtes o solucions que hagueu provat!
+
+Cordialment,
+
+         Germán Flores
+
+
+
+
+
+
+
+
+
+-----------------------------------------------------------
+
+Solució:
+
+Tot es pot contestar consultant la API de ServletAPI.
+
+
+
+Sobre com saber utilitzant Netbeans els mètodes disponibles, a part de la API, sempre queda el mètode clàssic d'escriure request. i esperar a que Netbeans ens digui quins tenim disponibles.
+
+
+
+Us adjunto un exemple de bucle per obtenir una enumeració de les "dades" (noms) disponibles a la capçalera HTTP
+
+<%
+            out.println("La teva IP és: " + request.getRemoteAddr());
+            java.util.Enumeration names = request.getHeaderNames();
+            while(names.hasMoreElements()){
+                String nom = (String) names.nextElement();                
+                out.println(nom + " --> " + request.getHeader(nom) + "<br>");
+            }            
+%>
+
+
+Us animo a provar aquestes solucions. Tal i com planteja el repte podeu fer un projecte Maven / Web Application per provar-les.
+
