@@ -1,0 +1,121 @@
+Setmana 7 - Repte1. Construint una aplicació web
+Mode de visualització
+Visualitza les respostes escalonades
+Imatge German Flores Caparrós
+Setmana 7 - Repte1. Construint una aplicació web
+per German Flores Caparrós - dilluns, 14 de novembre 2022, 10:05
+Nombre de respostes: 0
+Hola. 
+
+Obro aquest fil per tal de que intenteu contestar les preguntes del repte com a respostes d'aquest.
+
+L'objectiu d'aquest repte és assegurar que coneixem com estructurar el nostre codi en capes davant d'un problema concret que pot ser una bona base per a la generalització a qualsevol que s'us plantegi a la vostra vida professional.
+
+Enunciat del problema.
+
+Hem de desenvolupar una aplicació web de reserva de vols a partir d'un vol ja trobat (Id de vol, dia i hora concretats). És a dir, no farem la part d'aplicació de cerca del vol, suposem que l'usuari ja té en pantalla el vol desitjat i ara hem de reservar.
+
+Per reservar aquest vol, fent d'usuari, hem de seguir un procés:
+
+Donem el nombre de passatgers i ens confirma la disponibilitat, a més, fa una reserva de places temporal (no de seients, doncs no estem fent la facturació online)
+Donem el nostre codi de client (suposem que el tenim)
+Donem les dades de cada passatger (per exemple, DNI, Nom, Cognoms i edat)
+Fem la reserva (suposem que som tan bons clients que ja ens cobraran en altre moment). En aquest moment, es crea una reserva i rebaixa la disponibilitat (stock de places) de manera definitiva
+Què suposem que ens donen fet?
+
+Suposem que ens donen les vistes .jsp
+Suposem que ens donen els controladors específics fets
+Què heu de fer? Debatre / respondre les preguntes següents.
+
+Quin model de dades és adient? Quins domain objects?
+Quins objectes tindria la capa de persistència?
+Quines classes serveis desenvoluparíeu? Quins mètodes?
+Posem regles de negoci directament als domain object?
+Au! Intenteu respondre aquestes preguntes.
+
+
+ Germán Flores
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+------------------------------------------------------------------------------
+
+
+
+
+
+Afegeixo una resposta al repte setmanal:
+
+Hi ha diverses solucions per al model de dades. Una possible solució és la següent. Cada entitat del model seria una classe del domain.
+
+Vol
+
+Id
+
+Data
+
+Hora
+
+Places Totals
+
+Places Ocupades
+
+Llista de Reserves
+
+
+Client
+
+Id
+
+DNI
+
+...
+
+
+Passatger
+
+DNI
+
+Nom
+
+Cognoms
+
+Data de naixement
+
+
+Reserva
+
+Id
+
+client
+
+Llista de passatgers
+
+
+La capa de persistència, en el nostre cas, estaria formada per les classes InMemoryVolRepository, InMemoryClientRepository, InMemoryPassatgerRepository i InMemoryReservaRepository (amb les corresponents interfícies)
+
+Aquestes classes, a banda de donar valors inicials de prova i una llista dels objectes creats a l'aplicació, haurien de donar els mètodes per accedir / modificar les dades, segons les necessitats de l'aplicació (getVolById, getAllVols, addVol, updateVol, …)
+
+Es fa servir objectes InMemory quan no tenim encara implementada la capa de persistència de veritat, com per exemple, persistència sobre una base de dades.
+
+Penseu que la capa de servei dialoga amb aquesta capa només per mitjà de les interfícies, és a dir, si algun dia implementeu la capa de persistència sobre base de dades, l'únic que heu de fer és canviar les classes InMemoryXXXRepository per classes DaoXXXRepository (poso Dao perquè és el normal quan s'accedeix a bases de dades, però podeu posar el que vulgueu)
+
+Fixeu-vos que posant les interfícies pel mig, no hem de canviar altres capes de la nostra aplicació, això és el que es diu un acoblament feble entre elles.
+
+Sobre les classes a la capa de servei i les regles de negoci, contesto a la vegada. Crearem una classe de la capa de servei per a cadascuna de les entitats XXXServiceImpl (amb les corresponents interfícies)
+
+Les regles de negoci, es situen segons les entitats del model que estiguin implicades. Per exemple, si la regla només afecta a una entitat, és lògic que la regla es posi directament a la classe del domain que representa l'entitat. Per exemple, la comprovació de que un client no estigui ja donat d'alta (igual DNI) estaria clarament situat a la classe Client.
+
+Però, al crear un objecte Reserva, hem de d'incrementar Places Ocupades de Vol, comprovant que es pot,l i afegir aquest objecte Reserva a la Llista de Reserves de Vol. Tota aquestes operacions, no poden ser un mètode de Reserva, o de Vol, han de ser d'una de les classes de la capa de servei. En aquest cas, es podria situar en la classe ReservaServiceImpl.
